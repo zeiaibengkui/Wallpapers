@@ -1,0 +1,45 @@
+#settings-btn {
+    z-index: 50;
+    display: none;
+}
+
+[for="settings-btn"] {
+    position: fixed;
+    inset: auto auto 1.5rem 1rem;
+    font-size: 3rem;
+    text-shadow: black 0 0 8px;
+    z-index: 50;
+    rotate: 0;
+    transition: all 1s;
+    color: white;
+    line-height: .8;
+}
+
+#settings {
+    padding-left: 5rem;
+    --bg: #000000b9;
+    position: fixed;
+    inset: auto 0 0 0;
+    background: var(--bg);
+    box-shadow: var(--bg) 0 0 1em 1em;
+    color: white;
+    font: 3rem sans-serif;
+    transform: translateX(-120vw);
+    transition: transform 1s;
+    height: 2cap;
+    overflow: hidden auto;
+}
+
+#settings-btn:checked ~ #settings {
+    transform: translateX(0);
+}
+
+#settings-btn:checked ~ label {
+    /* margin-bottom: 5rem; */
+    rotate: 360deg;
+}
+
+#color-select{
+    background: transparent;
+    border: none;
+}

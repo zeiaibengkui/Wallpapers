@@ -1,0 +1,317 @@
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+:root {
+    --main-color: rgb(0, 255, 0);
+    --bg-clr:color-mix(in srgb,var(--main-color),rgba(0, 0, 0, 0.7) 70%);
+
+    --clock-size: 800px;
+    --clock-clr: color-mix(in hsl, var(--main-color), black);
+    --clock-numbers-clr: white;
+    --clock-mask-clr: black;
+    --clock-mask-opacity: 0.85; /* set the opacity of the mask to show more or less of the "non-active" values*/
+    --clock-mask-inset: 2px; /* creates a pseudo border around the clock */
+    --clock-center-border-clr: rgba(
+        255 255 255 / 0.25
+    ); /* border color around language button*/
+
+    /* dialog - lang selector */
+    --clock-dialog-bg-clr: color-mix(in hsl, var(--main-color), black);
+}
+body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    place-content: center;
+    font-family: system-ui;
+    background-color: var(--bg-clr);
+    background-size: cover;
+    background-position: center center;
+}
+
+#bg {
+    position: fixed;
+    inset: 0 0 0 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+}
+
+button:not([class]),
+.btn {
+    border-radius: 5rem;
+    padding: 0.5rem 1.2rem;
+    background: color-mix(in srgb, var(--main-color), transparent 70%);
+    border: .2rem solid color-mix(in srgb, var(--main-color), black 70%);
+    color: 3px solid color-mix(in srgb, var(--main-color), black 70%);
+    font: 1.8rem sans-serif;
+}
+
+.clock {
+    position: fixed;
+    place-content: center;
+    inset: 0;
+    margin: auto;
+    width: var(--clock-size);
+    height: var(--clock-size);
+    aspect-ratio: 1;
+    /* background: var(--clock-clr); */
+    border-radius: 50%;
+}
+@media (width < 800px) {
+    .clock {
+        left: 0;
+        right: auto;
+        translate: calc((50% - 2rem) * -1) 0;
+    }
+}
+/* semi transparent mask to hide not active time data*/
+.clock::before {
+    content: "";
+    position: absolute;
+    inset: var(--clock-mask-inset);
+    margin: auto;
+    border-radius: 50%;
+    z-index: 1;
+    clip-path: polygon(100% 48%, 50% 48%, 50% 52%, 100% 52%);
+    background-color: var(--bg-clr);
+}
+.clock::after {
+    content: "";
+    position: absolute;
+    inset: var(--clock-mask-inset);
+    margin: auto;
+    border-radius: 50%;
+    z-index: 20;
+    clip-path: polygon(100% 48%, 50% 48%, 50% 52%, 100% 52%);
+
+    backdrop-filter: brightness(120%);
+    border: 5px solid black;
+}
+
+.clock > div {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: var(--clock-d);
+    height: var(--clock-d);
+    font-size: var(--f-size, 0.9rem);
+    aspect-ratio: 1;
+    isolation: isolate;
+    border-radius: 50%;
+    opacity: 0.8;
+    text-shadow: rgba(0, 0, 0, 0.9) 0 0 3px;
+    z-index: 2;
+}
+
+/* years */
+.clock > div:nth-of-type(1) {
+    --clock-d: calc(var(--clock-size) - 20px);
+}
+/* seconds */
+.clock > div:nth-of-type(2) {
+    --clock-d: calc(var(--clock-size) - 130px);
+}
+/* minutes */
+.clock > div:nth-child(3) {
+    --clock-d: calc(var(--clock-size) - 195px);
+}
+
+/* hours */
+.clock > div:nth-child(4) {
+    --clock-d: calc(var(--clock-size) - 260px);
+}
+/* day numbers */
+.clock > div:nth-child(5) {
+    --clock-d: calc(var(--clock-size) - 350px);
+}
+/* month names  */
+.clock > div:nth-child(6) {
+    --clock-d: calc(var(--clock-size) - 470px);
+}
+/* day names*/
+.clock > div:nth-child(7) {
+    --clock-d: calc(var(--clock-size) - 600px);
+}
+
+.clock-face {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transition: 300ms linear;
+}
+.clock-face > * {
+    position: absolute;
+    transform-origin: center;
+    white-space: nowrap;
+    color: var(--clock-numbers-clr);
+    opacity: 0.75;
+
+    &.active {
+        opacity: 1;
+    }
+}
+
+.clock > .current-lang-display {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    z-index: 100;
+    display: grid;
+    place-content: center;
+    background-color: var(--clock-clr);
+    border: 1px solid var(--clock-center-border-clr);
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+    transition: 300ms ease-in-out;
+    font-size: 1.5rem;
+    outline: none;
+    &:focus-visible,
+    &:hover {
+        background-color: white;
+    }
+}
+/* time separators  - offset from center lang button */
+.current-lang-display::before,
+.current-lang-display::after {
+    content: ":";
+    color: var(--clock-numbers-clr);
+    position: absolute;
+    z-index: 199;
+    top: 50%;
+    right: 0;
+    font-size: 0.9rem;
+    translate: 283px -10px; /* magic numbers - could be improved */
+}
+.current-lang-display::after {
+    font-size: 0.9rem;
+    translate: 250px -10px; /* magic numbers - could be improved */
+}
+
+/* Dialog styles */
+dialog {
+    width: min(calc(100% - 2rem), 380px);
+    padding: 1rem;
+    border: none;
+    border-radius: 999px;
+    background: var(--clock-dialog-bg-clr);
+    text-align: center;
+    aspect-ratio: 1;
+    overflow: visible;
+    @starting-style {
+        opacity: 0;
+        scale: 0;
+    }
+    transition: opacity 500ms ease-in,
+        scale 500ms cubic-bezier(0.28, -0.55, 0.27, 1.55);
+}
+/* Backdrop styling */
+dialog[open]::backdrop {
+    background-color: rgba(from black r g b / 0.5);
+    backdrop-filter: blur(3px);
+    opacity: 1;
+    @starting-style {
+        opacity: 0;
+    }
+    transition: opacity 1000ms ease-in; /* this doesn't appear to be working */
+}
+
+dialog .btn-dialog-close {
+    position: absolute;
+    top: calc(50% - 20px);
+    right: calc(50% - 20px);
+    aspect-ratio: 1;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0.2;
+    font-size: 1.2rem;
+    color: black;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 300ms ease-in-out;
+    z-index: 11;
+    will-change: transform;
+    box-shadow: rgba(255, 255, 255, 0.466) 0 0 5px 3px;
+
+    &:focus-visible,
+    &:hover {
+        rotate: 180deg;
+        opacity: 1;
+        box-shadow: rgba(255, 0, 0, 0.8) 0 0 5px 5px;
+        color: red;
+    }
+}
+
+.language-options {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+}
+.language-options > label {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    font-size: 0.9rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    transition: 300ms ease-in-out;
+    display: grid;
+    place-content: center;
+    transform-origin: center;
+
+    &.active {
+        color: white;
+        background: var(--clock-clr);
+    }
+
+    &:focus-visible,
+    &:hover {
+        scale: 1.1;
+        z-index: 2;
+    }
+}
+.language-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    color: white;
+    font-size: 1.2rem;
+    @starting-style {
+        opacity: 0;
+    }
+    transition: opacity 300ms ease-in-out;
+}
+.flag-icon {
+    font-size: 1.5rem;
+    display: grid;
+    place-content: center;
+}
+.language-options input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    overflow: hidden;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <title>Bing Wallpaper</title>
+    <style>
+        html, body {
+            box-sizing: content-box;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        body {
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow: hidden;
+            color: white;
+            font-family: STXihei,WeiRuanYaHei,"Segoe UI Emoji",emoji,sans-serif;
+        }
+
+        #info {
+            position: fixed;
+            inset: auto 0 -2.5em auto;
+            transition: inset .3s;
+            padding: 1em;
+        }
+
+        #info:hover {
+            inset: auto 0 0 auto;
+        }
+
+        #title {
+            transition: all .3s;
+            font-size: 1.2em;
+            margin-left: auto;
+            width: max-content;
+            font-family: fangsong;
+            text-shadow: 0 0 9px black;
+            opacity: .5;
+        }
+
+        #info:hover > #title {
+            opacity: 1;
+            font-size: 2em;
+        }
+
+        a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: underline transparent;
+            transition: all .15s;
+        }
+
+        a:hover {
+            color: white;
+            text-shadow: rgba(255, 255, 255, 0.1) 0 0 2px;
+            text-decoration: underline rgba(255, 255, 255, 0.5);
+        }
+
+        #download {
+            margin-left: .5em;
+        }
+    </style>
+</head>
+
+
+<body style>
+<div id="info">
+    <h1 id="title"></h1>
+    <a id="copyright" target="_blank"></a>
+    <a id="download" download="BingWallpaper.jpg" target="_blank">📥</a><!--其实download属性没用，跨域-->
+</div>
+</body>
+<script>
+    (async () => {
+        const url = 'https://bing.biturl.top/?resolution=UHD&format=json&index=0&mkt=zh-CN';
+        let result = [
+            {
+                "startdate": "20240705",
+                "fullstartdate": "202407051600",
+                "enddate": "20240706",
+                "url": "/th?id=OHR.ConwyRiver_ZH-CN6871799250_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp",
+                "urlbase": "/th?id=OHR.ConwyRiver_ZH-CN6871799250",
+                "copyright": "从康威河眺望康威城堡，威尔士 (© David Chapman/Alamy Stock Photo)",
+                "copyrightlink": "https://www.bing.com/search?q=%E5%BA%B7%E5%A8%81%E6%B2%B3&form=hpcapt&mkt=zh-cn",
+                "title": "让我们扬帆起航！",
+                "quiz": "/search?q=Bing+homepage+quiz&filters=WQOskey:%22HPQuiz_20240705_ConwyRiver%22&FORM=HPQUIZ",
+                "wp": true,
+                "hsh": "5cc2db6b87eab727d4d2dbb56dd7855e",
+                "drk": 1,
+                "top": 1,
+                "bot": 1,
+                "hs": []
+            }
+        ]
+        result = await $.ajax({url: url});
+        console.log('result:', result);
+        $('#title').html(result.title);
+        $('#copyright').html(/*'🔎' + */result.copyright + '🔍')
+            .attr('href', result.copyrightlink);
+        document.body.style.backgroundImage = `url(${result.url})`;
+        $('#download').attr('href',`${result.url}`);
+    })()
+</script>
+</html>

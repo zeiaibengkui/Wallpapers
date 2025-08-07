@@ -1,0 +1,11 @@
+# pnpm
+node_modules/
+.pnpm/
+.pnpm-debug.log
+.env
+.env.*
+dist/
+build/
+.cache/
+.DS_Store
+*.log
