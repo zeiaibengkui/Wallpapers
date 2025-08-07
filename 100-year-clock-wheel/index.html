@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="./style.css" />
         <link rel="stylesheet" href="./settings.css" />
         <script src="../node_modules/jquery/dist/jquery.js"></script>
-        <script src="../node_modules/localforage/dist/localforage.js"></script>
+        <script src="../node_modules/localforage/dist/localforage.js" type="module"></script>
     </head>
     <body style>
         <img id="bg" alt="background" />
@@ -89,11 +89,12 @@
             <button onclick="openDialog()">Language</button>
             <label class="btn"><input type="color" id="color-select"/>Main Color</label>
             <style id="color-style"></style>
+            <a href="https://www.github.com/zeiaibengkui/Wallpapers" class="btn" target="_blank">Github</a>
 
         </div>
 
-        <script src="./clock.js"></script>
+        <script src="./clock.js" type="module"></script>
         <script src="./wallpaper.js" type="module"></script>
-        <script src="settings.js"></script>
+        <script src="settings.js" type="module"></script>
     </body>
 </html>

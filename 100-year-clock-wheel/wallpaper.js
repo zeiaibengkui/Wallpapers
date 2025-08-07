@@ -1,11 +1,9 @@
 let result = {
-    start_date: "20250805",
-    end_date: "20250806",
-    url: "https://www.bing.com/th?id=OHR.BabyLemur_ZH-CN6617977758_UHD.jpg",
-    copyright:
-        "环尾狐猴幼崽在玩自己的尾巴‌, 马达加斯加 (© Andy Rouse/Nature Picture Library)",
-    copyright_link:
-        "https://www.bing.com/search?q=%E7%8E%AF%E5%B0%BE%E7%8B%90%E7%8C%B4%E2%80%8C&form=hpcapt&mkt=zh-cn",
+    "start_date": "20250806",
+    "end_date": "20250807",
+    "url": "https://www.bing.com/th?id=OHR.GasparillaLight_ZH-CN6855683859_UHD.jpg",
+    "copyright": "加斯帕里拉岛灯塔后导标灯, 博卡格兰德, 佛罗里达州, 美国 (© Wiltser/Getty Images)",
+    "copyright_link": "https://www.bing.com/search?q=%E7%BE%8E%E5%9B%BD%E5%9B%BD%E5%AE%B6%E7%81%AF%E5%A1%94%E6%97%A5&form=hpcapt&mkt=zh-cn"
 };
 const storedResult = await localforage.getItem("bing");
 if(storedResult) result = storedResult
